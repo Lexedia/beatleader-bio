@@ -4,6 +4,7 @@
  * Copyright (c) 2026 Lexedia
  */
 
+// @ts-expect-error For the life of me shut the fuck up
 import { createServer } from 'vite'
 import * as sass from 'sass-embedded'
 import * as fs from 'node:fs'
@@ -11,48 +12,47 @@ import * as path from 'node:path'
 
 import solidPlugin from 'vite-plugin-solid'
 
-async function build() {
-  console.log('[1/4] Compiling SCSS to CSS...')
-  const scssPath = path.resolve(process.cwd(), 'src/styles/main.scss')
-  const { css: compiledCss } = sass.compile(scssPath, {
-    style: 'compressed',
-    loadPaths: [ path.resolve(process.cwd(), 'src/styles') ],
-  })
-  console.log(`SCSS compiled successfully (~${(compiledCss.length / 1024 / 1024).toFixed(2)} MiB).`)
+console.log('[1/4] Compiling SCSS to CSS...')
+const scssPath = path.resolve(process.cwd(), 'src/styles/main.scss')
+const { css: compiledCss } = sass.compile(scssPath, {
+  style: 'compressed',
+  loadPaths: [ path.resolve(process.cwd(), 'src/styles') ],
+})
+console.log(`SCSS compiled successfully (~${(compiledCss.length / 1024 / 1024).toFixed(2)} MiB).`)
 
-  console.log('[2/4] Rendering Solid JSX to static HTML...')
-  const vite = await createServer({
-    configFile: false,
-    plugins: [
-      solidPlugin({
-        ssr: true,
-        solid: {
-          generate: 'ssr',
-          hydratable: false,
-        },
-      }),
-    ],
-    server: { middlewareMode: true },
-    appType: 'custom',
-  })
+console.log('[2/4] Rendering Solid JSX to static HTML...')
+const vite = await createServer({
+  configFile: false,
+  plugins: [
+    solidPlugin({
+      ssr: true,
+      solid: {
+        generate: 'ssr',
+        hydratable: false,
+      },
+    }),
+  ],
+  server: { middlewareMode: true },
+  appType: 'custom',
+})
 
-  const { renderBio } = await vite.ssrLoadModule('/src/render.ts')
-  const bioHtml = await renderBio()
-  await vite.close()
-  console.log(`Solid component rendered to static HTML (~${(bioHtml.length / 1024 / 1024).toFixed(2)} MiB).`)
+const { renderBio } = await vite.ssrLoadModule('/src/render.ts')
+const bioHtml = await renderBio()
+await vite.close()
+console.log(`Solid component rendered to static HTML (~${(bioHtml.length / 1024 / 1024).toFixed(2)} MiB).`)
 
-  console.log('[3/4] Preparing output files in dist/...')
-  const distDir = path.resolve(process.cwd(), 'dist')
-  if (!fs.existsSync(distDir)) {
-    fs.mkdirSync(distDir, { recursive: true })
-  }
+console.log('[3/4] Preparing output files in dist/...')
+const distDir = path.resolve(process.cwd(), 'dist')
+if (!fs.existsSync(distDir)) {
+  fs.mkdirSync(distDir, { recursive: true })
+}
 
-  const bioSnippet = `<style>\n${compiledCss}\n</style>\n${bioHtml}\n`
-  const snippetPath = path.join(distDir, 'bio-snippet.html')
-  fs.writeFileSync(snippetPath, bioSnippet, 'utf-8')
-  console.log(`Generated BeatLeader Bio snippet -> ${snippetPath}`)
+const bioSnippet = `<style>\n${compiledCss}\n</style>\n${bioHtml}\n`
+const snippetPath = path.join(distDir, 'bio-snippet.html')
+fs.writeFileSync(snippetPath, bioSnippet, 'utf-8')
+console.log(`Generated BeatLeader Bio snippet -> ${snippetPath}`)
 
-  const previewHtml = `<!DOCTYPE html>
+const previewHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -202,13 +202,8 @@ ${bioHtml}
 </body>
 </html>`
 
-  const previewPath = path.join(distDir, 'index.html')
-  fs.writeFileSync(previewPath, previewHtml, 'utf-8')
-  console.log(`Generated Standalone Preview -> ${previewPath}`)
-  console.log('[4/4] Static build complete!')
-}
+const previewPath = path.join(distDir, 'index.html')
+fs.writeFileSync(previewPath, previewHtml, 'utf-8')
+console.log(`Generated Standalone Preview -> ${previewPath}`)
+console.log('[4/4] Static build complete!')
 
-build().catch((err) => {
-  console.error('❌ Build failed:', err)
-  process.exit(1)
-})

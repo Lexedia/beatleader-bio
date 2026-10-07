@@ -1,8 +1,14 @@
-import { render } from 'solid-js/web';
-import { Bio } from './components/Bio';
-import './styles/main.scss';
+/*
+ * MIT License
+ *
+ * Copyright (c) 2026 Lexedia
+ */
 
-const root = document.getElementById('root');
+import { render } from 'solid-js/web'
+import { Bio } from './components/Bio'
+import './styles/main.scss'
+
+const root = document.getElementById('root')
 if (root) {
-  render(() => <Bio />, root);
+  render(() => <Bio />, root)
 }

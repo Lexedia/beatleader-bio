@@ -101,9 +101,7 @@
     const themeSelect = document.getElementById('themeSelect');
     themeSelect.addEventListener('change', (e) => {
       document.body.className = e.target.value;
-      if (e.target.value === 'mirror-theme' || e.target.value === 'unbounded-theme') {
-        document.body.classList.add('theme-mirror');
-      } else if (e.target.value === 'flylight-theme') {
+      if (e.target.value === 'flylight-theme') {
         document.body.classList.add('theme-flylight');
       }
     });
