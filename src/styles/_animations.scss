@@ -1,0 +1,39 @@
+@keyframes moeFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+}
+
+@keyframes moePulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 133, 162, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 133, 162, 0.5), 0 0 30px rgba(184, 146, 255, 0.3);
+  }
+}
+
+@keyframes moeFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes moeSparkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}

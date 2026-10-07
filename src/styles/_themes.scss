@@ -1,0 +1,52 @@
+.mirror-theme .bl-bio,
+.mirror-low-theme .bl-bio,
+.unbounded-theme .bl-bio {
+  --bg: rgba(24, 18, 32, 0.45);
+  --card-bg: rgba(28, 20, 38, 0.65);
+  --card-border: rgba(255, 183, 213, 0.35);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.flylight-theme .bl-bio {
+  --bg: #fff8fb;
+  --card-bg: #ffffff;
+  --card-border: #ffd5e2;
+  --card-hover-border: #ff7096;
+  --card-shadow: 0 10px 28px -6px rgba(230, 110, 150, 0.18);
+  --text-primary: #3b2230;
+  --text-secondary: #6e4b5d;
+  --text-muted: #9f7d90;
+  --tag-bg: #ffe4ee;
+  --tag-border: #ffb8cf;
+  --tag-text: #d6336c;
+  --tab-inactive-bg: #f5edf2;
+  --tab-inactive-color: #7b596d;
+  --tab-active-color: #ffffff;
+  --divider: #f0dfe7;
+  --glow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --glow-strong: 0 6px 18px rgba(0, 0, 0, 0.12);
+
+  .header-name {
+    color: #401f32;
+    text-shadow: none;
+  }
+
+  .social-btn {
+    background: #ffffff;
+    border-color: #ffd1dc;
+    color: #6e4b5d;
+
+    &:hover {
+      background: #ffe9f1;
+      border-color: #ff85a2;
+      color: #d6336c;
+    }
+  }
+
+  .info-card {
+    background: #ffffff;
+    border-color: #ffd8e4;
+  }
+}
