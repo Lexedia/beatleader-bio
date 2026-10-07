@@ -1,4 +1,4 @@
-@keyframes moeFloat {
+@keyframes float {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
   }
@@ -7,7 +7,7 @@
   }
 }
 
-@keyframes moePulseGlow {
+@keyframes pulseGlow {
   0%, 100% {
     box-shadow: 0 0 10px rgba(255, 133, 162, 0.25);
   }
@@ -16,7 +16,7 @@
   }
 }
 
-@keyframes moeFadeSlide {
+@keyframes fadeSlide {
   0% {
     opacity: 0;
     transform: translateY(8px);
@@ -27,7 +27,7 @@
   }
 }
 
-@keyframes moeSparkle {
+@keyframes sparkle {
   0%, 100% {
     opacity: 0.4;
     transform: scale(0.9);
