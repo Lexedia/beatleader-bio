@@ -52,7 +52,7 @@ export function FavouritesPanel(props: FavoritesPanelProps) {
         </div>
       </div>
 
-      <div style={{ 'margin-top': '14px' }} class="card">
+      <div style={{ 'margin-top': '8px' }} class="card">
         <div class="card-header">
           <span class="card-icon">💖</span>
           <span>Maps</span>

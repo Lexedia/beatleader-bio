@@ -66,7 +66,7 @@ export const defaultBioConfig: BioConfig = {
   profile: {
     name: 'Lexie ✧',
     pronouns: 'she/her',
-    avatarUrl: 'TODO',
+    avatarUrl: 'https://raw.githubusercontent.com/Lexedia/beatleader-bio/refs/heads/mistress/assets/pfp.jpg',
     tagline: 'swinging my sabres to lovely rhythms',
     statusEmote: '(✿◠‿◠)',
     badges: [
@@ -123,8 +123,8 @@ export const defaultBioConfig: BioConfig = {
       name: '(LSTR-512) Elster',
       author: 'mipity',
       authorUrl: 'https://www.twitch.tv/mipity',
-      fileUrl: 'TODO',
-      previewUrl: 'TODO',
+      fileUrl: 'https://github.com/Lexedia/beatleader-bio/raw/refs/heads/mistress/assets/(LSTR-512)%20Elster.reesaber',
+      previewUrl: 'https://raw.githubusercontent.com/Lexedia/beatleader-bio/refs/heads/mistress/assets/reesabers.webp',
     },
   },
   favourites: {
