@@ -67,7 +67,7 @@ export const defaultBioConfig: BioConfig = {
     name: 'Lexie ✧',
     pronouns: 'she/her',
     avatarUrl: 'https://raw.githubusercontent.com/Lexedia/beatleader-bio/refs/heads/mistress/assets/pfp.jpg',
-    tagline: 'swinging my sabres to lovely rhythms',
+    tagline: 'beating my sabre',
     statusEmote: '(✿◠‿◠)',
     badges: [
       {
