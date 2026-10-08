@@ -120,7 +120,17 @@ export default defineConfig({
         caughtErrorsIgnorePattern: '^_',
       },
     ],
-
+    '@stylistic/member-delimiter-style': [
+      'error',
+      {
+        multiline: {
+          delimiter: 'none',
+        },
+        singleline: {
+          delimiter: 'semi',
+        },
+      },
+    ],
   },
 },
 {

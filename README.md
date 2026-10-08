@@ -4,6 +4,17 @@ a project to generate the bio for my beatleader profile
 
 <sub>idk go stalk another project</sub>
 
+## Setup
+It's kind of janky, but basically, have [mise](https://mise.jdx.dev) installed.
+Then run `mise install && pnpm i`
+
+If you want to change/edit stuff, use `pnpm dev` and to your changes, everything will be hotreloaded.
+
+Also, because the beatleader bio editor is veeeery laggy and slow, I really advise you to use the `pnpm push` script, that will automatically push your changes to the server.
+You do however need to have your beatleader auth cookie set in the `.env` file as `BL_COOKIE`.
+
+To get it, just go to the Network tab and find the first request to `api.beatleader.com` with a `Cookie` header set. Or go to Storage and copy the value of the `.AspNetCore.Cookies` cookie.
+
 ### Credits
 
 - For the Reesabers:

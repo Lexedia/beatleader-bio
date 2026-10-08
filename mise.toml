@@ -1,0 +1,6 @@
+[settings]
+auto_install = true
+
+[tools]
+node = "26.11.1"
+pnpm = "12.10.1"

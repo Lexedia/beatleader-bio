@@ -5,9 +5,12 @@
  */
 
 import type { BioConfig } from '../../data/bioConfig'
+import { fonts } from '../../data/fonts'
+import { FontText } from '../FontText'
 
 interface GearPanelProps {
-  gear: BioConfig['gear'];
+  gear: BioConfig['gear']
+  fontRendering: BioConfig['fontRendering']
 }
 
 export function GearPanel(props: GearPanelProps) {
@@ -17,7 +20,16 @@ export function GearPanel(props: GearPanelProps) {
         <div class="card">
           <div class="card-header">
             <span class="card-icon">🥽</span>
-            <span>Hardware & Gear</span>
+            <span>
+              <FontText
+                font={fonts.stackSansNotch}
+                mode={props.fontRendering}
+                size={14}
+                weight={600}
+              >
+                Hardware & Gear
+              </FontText>
+            </span>
           </div>
           <div class="kv-list">
             <div class="kv-item">
@@ -39,7 +51,16 @@ export function GearPanel(props: GearPanelProps) {
           <div class="card reesabers-card">
             <div class="card-header">
               <span class="card-icon">⚔️</span>
-              <span>ReeSabers</span>
+              <span>
+                <FontText
+                  font={fonts.stackSansNotch}
+                  mode={props.fontRendering}
+                  size={14}
+                  weight={600}
+                >
+                  ReeSabers
+                </FontText>
+              </span>
             </div>
             {props.gear.reeSabers.previewUrl && (
               <div class="reesabers-preview">

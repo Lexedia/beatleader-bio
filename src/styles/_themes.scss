@@ -1,3 +1,14 @@
+html body {
+  &.default-theme,
+  &.mirror-theme,
+  &.mirror-low-theme,
+  &.ree-dark-theme,
+  &.flylight-theme {
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
 .mirror-theme .bl-bio,
 .mirror-low-theme .bl-bio,
 .unbounded-theme .bl-bio {

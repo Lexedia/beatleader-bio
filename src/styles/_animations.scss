@@ -7,7 +7,7 @@
   }
 }
 
-@keyframes pulseGlow {
+@keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 10px rgba(255, 133, 162, 0.25);
   }
@@ -16,7 +16,7 @@
   }
 }
 
-@keyframes fadeSlide {
+@keyframes fade-slide {
   0% {
     opacity: 0;
     transform: translateY(8px);
@@ -35,5 +35,74 @@
   50% {
     opacity: 1;
     transform: scale(1.15);
+  }
+}
+
+@keyframes star-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blob-drift-a {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    border-radius: 42% 58% 63% 37% / 45% 40% 60% 55%;
+  }
+  33% {
+    transform: translate(180px, 120px) rotate(60deg) scale(1.15);
+    border-radius: 63% 37% 45% 55% / 55% 60% 40% 45%;
+  }
+  66% {
+    transform: translate(60px, 320px) rotate(120deg) scale(0.9);
+    border-radius: 38% 62% 55% 45% / 62% 38% 62% 38%;
+  }
+  100% {
+    transform: translate(380px, 200px) rotate(180deg) scale(1.1);
+    border-radius: 55% 45% 38% 62% / 40% 55% 45% 60%;
+  }
+}
+
+@keyframes blob-drift-b {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1.05);
+    border-radius: 58% 42% 37% 63% / 40% 45% 55% 60%;
+  }
+  33% {
+    transform: translate(-220px, -140px) rotate(-70deg) scale(0.9);
+    border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+  }
+  66% {
+    transform: translate(-80px, -340px) rotate(-130deg) scale(1.2);
+    border-radius: 62% 38% 45% 55% / 45% 62% 38% 55%;
+  }
+  100% {
+    transform: translate(-400px, -180px) rotate(-200deg) scale(1);
+    border-radius: 45% 55% 62% 38% / 55% 38% 62% 45%;
+  }
+}
+
+@keyframes note-drift {
+  0% {
+    transform: translate(-50%, -50%) translateY(0) rotate(-10deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(-14px) rotate(10deg);
+  }
+}
+
+@keyframes text-glint {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.85;
+  }
+  12%,
+  100% {
+    opacity: 0;
   }
 }

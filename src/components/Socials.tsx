@@ -10,7 +10,7 @@
 import type { SocialLink } from '../data/bioConfig'
 
 interface SocialsProps {
-  socials: SocialLink[];
+  socials: SocialLink[]
 }
 
 function renderIcon(icon: SocialLink['icon']) {
@@ -39,11 +39,8 @@ function renderIcon(icon: SocialLink['icon']) {
       )
     case 'beatsaver':
       return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="fill:none;stroke:currentColor;stroke-width:10;stroke-linejoin:round;stroke-linecap:round">
-          <path d="M100,7 L189,47 L100,87 L12,47 Z" />
-          <path d="M189,47 L189,155 L100,196 L12,155 L12,47" />
-          <path d="M100,87 L100,196" />
-          <path d="M26,77 L85,106 L53,130 Z" />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+          <path d="M102.05 2.44L191.05 42.44L186.95 51.56L97.95 11.56ZM191.05 51.56L102.05 91.56L97.95 82.44L186.95 42.44ZM97.93 91.55L9.93 51.55L14.07 42.45L102.07 82.45ZM9.93 42.45L97.93 2.45L102.07 11.55L14.07 51.55ZM194 47L194 155L184 155L184 47ZM191.09 159.54L102.09 200.54L97.91 191.46L186.91 150.46ZM97.89 200.53L9.89 159.53L14.11 150.47L102.11 191.47ZM7 155L7 47L17 47L17 155ZM105 87L105 196L95 196L95 87ZM28.21 72.51L87.21 101.51L82.79 110.49L23.79 81.49ZM88 110L56 134L50 126L82 102ZM48.54 132.27L21.54 79.27L30.46 74.73L57.46 127.73ZM7 47A5 5 0 1 1 17 47A5 5 0 1 1 7 47ZM7 155A5 5 0 1 1 17 155A5 5 0 1 1 7 155ZM21 77A5 5 0 1 1 31 77A5 5 0 1 1 21 77ZM48 130A5 5 0 1 1 58 130A5 5 0 1 1 48 130ZM80 106A5 5 0 1 1 90 106A5 5 0 1 1 80 106ZM95 7A5 5 0 1 1 105 7A5 5 0 1 1 95 7ZM95 87A5 5 0 1 1 105 87A5 5 0 1 1 95 87ZM95 196A5 5 0 1 1 105 196A5 5 0 1 1 95 196ZM184 47A5 5 0 1 1 194 47A5 5 0 1 1 184 47ZM184 155A5 5 0 1 1 194 155A5 5 0 1 1 184 155Z" fill="currentColor" />
         </svg>
       )
     case 'twitch':

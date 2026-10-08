@@ -5,11 +5,11 @@
  */
 
 interface SafeZone {
-  xMin: number;
-  xMax: number;
-  yMin: number;
-  yMax: number;
-  weight: number;
+  xMin: number
+  xMax: number
+  yMin: number
+  yMax: number
+  weight: number
 }
 
 const STAR_CHARACTERS = [
@@ -25,6 +25,11 @@ const STAR_CHARACTERS = [
   '✷',
   '✸',
   '⊹',
+  '✱',
+  '＊',
+  '✳',
+  '*',
+  '⚝',
 ]
 
 const STAR_COLORS = [
@@ -51,7 +56,7 @@ const SAFE_ZONES: SafeZone[] = [
     weight: 1,
   },
   {
-    xMin: 20,
+    xMin: 30,
     xMax: 60,
     yMin: 0.8,
     yMax: 3.2,
@@ -126,22 +131,25 @@ function createPrng(seed: number = 69) {
 }
 
 interface StarItem {
-  x: string;
-  y: string;
-  char: string;
-  size: number;
-  color: string;
-  opacity: string;
-  duration: string;
-  delay: string;
-  rotate: number;
+  x: string
+  y: string
+  char: string
+  size: number
+  color: string
+  opacity: string
+  duration: string
+  delay: string
+  rotate: number
+  spinDuration: string
+  spinDirection: 'cw' | 'ccw'
 }
 
 function generateStars(count: number, seed: number = 69): StarItem[] {
   const rand = createPrng(seed)
+  const spinRand = createPrng(seed + 44267)
   const totalWeight = SAFE_ZONES.reduce((sum, z) => sum + z.weight, 0)
   const placed: {
-    x: number;
+    x: number
     y: number
   }[] = []
   const stars: StarItem[] = []
@@ -204,6 +212,8 @@ function generateStars(count: number, seed: number = 69): StarItem[] {
     const duration = (2.8 + (rand() * 2.7)).toFixed(2)
     const delay = (rand() * 4.0).toFixed(2)
     const rotate = Math.round((rand() - 0.5) * 40)
+    const spinDuration = (spinRand() < 0.5 ? 20 + (spinRand() * 15) : 50 + (spinRand() * 30)).toFixed(1)
+    const spinDirection = spinRand() < 0.5 ? 'cw' : 'ccw'
 
     stars.push({
       x: candidateX.toFixed(2),
@@ -215,6 +225,8 @@ function generateStars(count: number, seed: number = 69): StarItem[] {
       duration,
       delay,
       rotate,
+      spinDuration,
+      spinDirection,
     })
   }
 
@@ -222,8 +234,8 @@ function generateStars(count: number, seed: number = 69): StarItem[] {
 }
 
 export interface StarsProps {
-  n?: number;
-  seed?: number;
+  n?: number
+  seed?: number
 }
 
 export function Stars(props: StarsProps) {
@@ -231,18 +243,20 @@ export function Stars(props: StarsProps) {
   const stars = generateStars(count, props.seed ?? 69)
 
   return (
-    <>
+    <div class="deco-stars" aria-hidden="true">
       {stars.map((star) => (
-        <span
-          class="deco-star"
-          // actually too scared to place that on multiple lines
-          // eslint-disable-next-line @stylistic/max-len
-          style={`top: ${star.y}%; left: ${star.x}%; font-size: ${star.size}px; color: ${star.color}; opacity: ${star.opacity}; animation-duration: ${star.duration}s; animation-delay: ${star.delay}s; transform: rotate(${star.rotate}deg);`}
-          aria-hidden="true"
-        >
-          {star.char}
+        <span class="deco-star" style={`top: ${star.y}%; left: ${star.x}%; transform: translate(-50%, -50%) rotate(${star.rotate}deg);`}>
+          <span class={`deco-star-spin deco-star-spin-${star.spinDirection}`} style={`animation-duration: ${star.spinDuration}s;`}>
+            <span
+              class="deco-star-glyph"
+              // eslint-disable-next-line @stylistic/max-len
+              style={`font-size: ${star.size}px; color: ${star.color}; opacity: ${star.opacity}; animation-duration: ${star.duration}s; animation-delay: ${star.delay}s;`}
+            >
+              {star.char}
+            </span>
+          </span>
         </span>
       ))}
-    </>
+    </div>
   )
 }

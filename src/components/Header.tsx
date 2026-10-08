@@ -5,9 +5,12 @@
  */
 
 import type { BioConfig } from '../data/bioConfig'
+import { fonts } from '../data/fonts'
+import { FontText } from './FontText'
 
 interface HeaderProps {
-  profile: BioConfig['profile'];
+  profile: BioConfig['profile']
+  fontRendering: BioConfig['fontRendering']
 }
 
 export function Header(props: HeaderProps) {
@@ -24,8 +27,28 @@ export function Header(props: HeaderProps) {
 
       <div class="header-info">
         <div class="title-row">
-          <h1 class="name">{props.profile.name}</h1>
-          <span class="pronouns">{props.profile.pronouns}</span>
+          <h1 class="name">
+            <FontText
+              font={fonts.stackSansNotch}
+              mode={props.fontRendering}
+              size={20}
+              weight={800}
+              letterSpacing={-0.02}
+              glint
+            >
+              {props.profile.name}
+            </FontText>
+          </h1>
+          <span class="pronouns">
+            <FontText
+              font={fonts.stackSansNotch}
+              mode={props.fontRendering}
+              size={13}
+              weight={600}
+            >
+              {props.profile.pronouns}
+            </FontText>
+          </span>
         </div>
         <p class="tagline">{props.profile.tagline}</p>
 
@@ -33,7 +56,16 @@ export function Header(props: HeaderProps) {
           {props.profile.badges.map((b) => (
             <span class="badge">
               <span>{b.icon}</span>
-              <span>{b.label}</span>
+              <span>
+                <FontText
+                  font={fonts.stackSansNotch}
+                  mode={props.fontRendering}
+                  size={14}
+                  weight={600}
+                >
+                  {b.label}
+                </FontText>
+              </span>
             </span>
           ))}
         </div>

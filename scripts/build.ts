@@ -33,6 +33,8 @@ const vite = await createServer({
     }),
   ],
   server: { middlewareMode: true },
+  // opentype.js' CJS entry doesn't expose named exports to SSR, so we bundle its ESM build instead
+  ssr: { noExternal: [ 'opentype.js' ] },
   appType: 'custom',
 })
 
@@ -57,7 +59,7 @@ const previewHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BeatLeader Moe Bio Preview</title>
+  <title>BeatLeader Bio Preview</title>
   <style>
     body {
       margin: 0;

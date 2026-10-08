@@ -5,64 +5,83 @@
  */
 
 export interface SocialLink {
-  name: string;
-  url: string;
-  icon: 'beatleader' | 'scoresaber' | 'beatsaver' | 'twitch' | 'youtube' | 'discord' | 'twitter' | 'github';
-  label?: string;
+  name: string
+  url: string
+  icon: 'beatleader' | 'scoresaber' | 'beatsaver' | 'twitch' | 'youtube' | 'discord' | 'twitter' | 'github'
+  label?: string
+}
+
+export interface Video {
+  url: string
+  note?: string
 }
 
 export interface BioConfig {
+  fontRendering: 'svg' | 'font-face'
+  saberColors: {
+    left: string
+    right: string
+  }
   profile: {
-    name: string;
-    pronouns: string;
-    avatarUrl: string;
-    tagline: string;
-    statusEmote: string;
+    name: string
+    pronouns: string
+    avatarUrl: string
+    tagline: string
+    statusEmote: string
     badges: {
-      icon: string;
-      label: string
-    }[];
-  };
-  about: {
-    quote: string;
-    introTitle: string;
-    introText: string;
-    quickFacts: {
-      label: string;
-      value: string
-    }[];
-    goals: {
-      title: string;
-      desc: string;
       icon: string
-    }[];
-  };
+      label: string
+    }[]
+  }
+  about: {
+    quote: string
+    showQuoteIcon: boolean
+    introTitle: string
+    introText: string
+    quickFacts: {
+      label: string
+      value: string
+      spoiler?: boolean
+    }[]
+    goals: {
+      title: string
+      desc: string
+      icon: string
+    }[]
+  }
   gear: {
-    headset: string;
-    controllers: string;
-    grip: string;
+    headset: string
+    controllers: string
+    grip: string
     reeSabers?: {
-      name: string;
-      author: string;
-      authorUrl?: string;
-      fileUrl: string;
-      previewUrl?: string;
-    };
-  };
+      name: string
+      author: string
+      authorUrl?: string
+      fileUrl: string
+      previewUrl?: string
+    }
+  }
   favourites: {
-    mappers: string[];
+    mappers: string[]
     topMaps: {
-      title: string;
-      artist: string;
-      bsr: string;
+      title: string
+      artist: string
+      bsr: string
       diff: string
-    }[];
-    genres: string[];
-  };
-  socials: SocialLink[];
+    }[]
+    genres: string[]
+  }
+  // The Videos tab only shows when this has entries
+  videos: Video[]
+  socials: SocialLink[]
 }
 
 export const defaultBioConfig: BioConfig = {
+  fontRendering: 'svg',
+  saberColors: {
+    left: '#da93ff',
+    right: '#8adcff',
+  },
   profile: {
     name: 'Lexie ✧',
     pronouns: 'she/her',
@@ -81,9 +100,10 @@ export const defaultBioConfig: BioConfig = {
     ],
   },
   about: {
-    quote: '“Male pregnancy is real!”',
-    introTitle: 'Hello there! (´｡• ᵕ •｡`) ♡',
-    introText: 'Welcome to my BeatLeader profile! I\'m an avid rhythm game lover who enjoys slicing cubes, practising accuracy, and having fun with tech maps.',
+    showQuoteIcon: false,
+    quote: 'hey, i have a bio on my profile, am i cool now?',
+    introTitle: 'Ahoy! (´｡• ᵕ •｡`) ♡',
+    introText: 'Welcome to my BeatLeader profile! I\'m an avid rhythm game lover who enjoys slicing cubes, practicing accuracy, and having fun with tech maps.',
     quickFacts: [
       {
         label: 'Main Game',
@@ -92,6 +112,7 @@ export const defaultBioConfig: BioConfig = {
       {
         label: 'Playstyle',
         value: 'Trying not to die :3',
+        spoiler: true,
       },
       {
         label: 'Favourite Mapping Style',
@@ -155,6 +176,12 @@ export const defaultBioConfig: BioConfig = {
       },
     ],
   },
+  videos: [
+    {
+      url: 'https://www.youtube.com/watch?v=tZvmppd7XIk',
+      note: 'I love the song, and banger map honestly',
+    },
+  ],
   socials: [
     {
       name: 'BeatLeader',

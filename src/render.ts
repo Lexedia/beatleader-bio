@@ -7,13 +7,13 @@
 import { renderToString } from 'solid-js/web'
 import { Bio } from './components/Bio'
 import { defaultBioConfig, type BioConfig } from './data/bioConfig'
-import { fetchAllMapperAvatars } from './utils/mapperAvatars'
+import { fetchBioData } from './utils/bioData'
 
 export async function renderBio(config: BioConfig = defaultBioConfig): Promise<string> {
-  const mapperAvatars = await fetchAllMapperAvatars(config.favourites.mappers)
+  const data = await fetchBioData(config)
   return renderToString(() => Bio({
     config,
-    mapperAvatars,
+    data,
   }))
 }
 
