@@ -142,11 +142,17 @@ function placeLinks(links: ChainLink[]): PlacedLink[] {
   })
 }
 
-function NoteArrow(props: { width?: number }) {
-  const width = props.width ?? 14
+/* See src/styles/_components.scss:147  */
+const CUBE_DEPTH = 3
+const LINK_DEPTH = 2
+
+const ARROW_SPAN = 0.8
+
+function NoteArrow(props: { faceSize: number }) {
+  const width = Math.round(props.faceSize * ARROW_SPAN)
   return (
-    <svg class="note-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 5.5" width={width} height={Number((width * 5.5 / 14).toFixed(2))}>
-      <path d="M1.7 0.7L12.3 0.7Q13.4 0.7 12.48 1.3L7.92 4.3Q7 4.9 6.08 4.3L1.52 1.3Q0.6 0.7 1.7 0.7Z" />
+    <svg class="note-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 4.4" width={width} height={Number((width * 4.4 / 14).toFixed(2))}>
+      <path d="M1.7 0.7L12.3 0.7Q13.4 0.7 12.45 1.2L7.85 3.45Q7 3.85 6.15 3.45L1.55 1.2Q0.6 0.7 1.7 0.7Z" />
     </svg>
   )
 }
@@ -159,10 +165,10 @@ export function NoteCubes() {
           class={`note-cube note-${cube.hand}`}
           style={`top: ${cube.y}%; left: ${cube.x}%; width: ${cube.size}px; height: ${cube.size}px; animation-duration: ${cube.duration}s; animation-delay: ${cube.delay}s;`}
         >
-          <span class="note-body" style={`transform: rotate(${cube.direction ?? 0}deg);`}>
+          <span class="note-body" style={`height: ${cube.size - CUBE_DEPTH}px; transform: rotate(${cube.direction ?? 0}deg);`}>
             {cube.direction === undefined
               ? <span class="note-dot" />
-              : <NoteArrow />}
+              : <NoteArrow faceSize={cube.size} />}
           </span>
         </span>
       ))}
@@ -172,13 +178,13 @@ export function NoteCubes() {
           style={`top: ${chain.y}%; left: ${chain.x}%; width: ${chain.size}px; height: ${chain.size}px; animation-duration: ${chain.duration}s; animation-delay: ${chain.delay}s;`}
         >
           <span class="note-chain-body" style={`transform: rotate(${chain.direction}deg);`}>
-            <span class="note-body note-chain-head" style={`width: ${chain.size}px; height: ${chain.headHeight}px;`}>
-              <NoteArrow width={Math.round(chain.size * 0.6)} />
+            <span class="note-body note-chain-head" style={`width: ${chain.size}px; height: ${chain.headHeight - CUBE_DEPTH}px;`}>
+              <NoteArrow faceSize={chain.size} />
             </span>
             {placeLinks(chain.links).map((link) => (
               <span
                 class="note-link"
-                style={`width: ${chain.size}px; height: ${Math.round(chain.size * 0.32)}px; transform: translate(-50%, -50%) translate(${link.x}px, ${link.y}px) rotate(${link.heading}deg);`}
+                style={`width: ${chain.size}px; height: ${Math.round(chain.size * 0.32) - LINK_DEPTH}px; transform: translate(-50%, -50%) translate(${link.x}px, ${link.y}px) rotate(${link.heading}deg);`}
               >
                 <span class="note-dot" />
               </span>

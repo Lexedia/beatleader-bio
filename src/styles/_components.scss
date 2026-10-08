@@ -141,21 +141,21 @@
     &.note-left .note-body,
     &.note-left .note-link {
       background: var(--saber-left);
-      box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.28), 0 0 12px var(--saber-left);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.28), 0 3px 0 var(--saber-left), 0 0 12px var(--saber-left);
     }
 
     &.note-right .note-body,
     &.note-right .note-link {
       background: var(--saber-right);
-      box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.28), 0 0 12px var(--saber-right);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.28), 0 3px 0 var(--saber-right), 0 0 12px var(--saber-right);
     }
 
     &.note-left .note-link {
-      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.28), 0 0 10px var(--saber-left);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 0 var(--saber-left), 0 0 10px var(--saber-left);
     }
 
     &.note-right .note-link {
-      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.28), 0 0 10px var(--saber-right);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 0 var(--saber-right), 0 0 10px var(--saber-right);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -714,10 +714,23 @@
   .spoiler {
     cursor: pointer;
 
+    .reveal-toggle {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .spoiler-content {
       filter: blur(5px);
       transition: filter 0.25s ease;
       user-select: none;
+    }
+
+    .reveal-toggle:checked + .spoiler-content {
+      filter: none;
+      user-select: auto;
     }
   }
 
