@@ -18,7 +18,7 @@ const { css: compiledCss } = sass.compile(scssPath, {
   style: 'compressed',
   loadPaths: [ path.resolve(process.cwd(), 'src/styles') ],
 })
-console.log(`SCSS compiled successfully (~${(compiledCss.length / 1024 / 1024).toFixed(2)} MiB).`)
+console.log(`SCSS compiled successfully (~${(compiledCss.length / 1024).toFixed(2)} KiB).`)
 
 console.log('[2/4] Rendering Solid JSX to static HTML...')
 const vite = await createServer({
@@ -41,7 +41,7 @@ const vite = await createServer({
 const { renderBio } = await vite.ssrLoadModule('/src/render.ts')
 const bioHtml = await renderBio()
 await vite.close()
-console.log(`Solid component rendered to static HTML (~${(bioHtml.length / 1024 / 1024).toFixed(2)} MiB).`)
+console.log(`Solid component rendered to static HTML (~${(bioHtml.length / 1024).toFixed(2)} KiB).`)
 
 console.log('[3/4] Preparing output files in dist/...')
 const distDir = path.resolve(process.cwd(), 'dist')
