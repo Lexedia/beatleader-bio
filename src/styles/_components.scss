@@ -311,9 +311,6 @@
       color: var(--text-primary);
     }
 
-    .svg-text {
-      display: inline;
-    }
 
     .svg-text-glint {
       fill: var(--saber-left);
@@ -607,6 +604,31 @@
 
   .card-icon .icon-svg {
     color: var(--pink-accent);
+  }
+
+  // SVG-rendered text (FontText): the glyphs are paths, so a transparent copy of the text sits
+  // over them to keep it selectable and copyable. The fallback font won't match the glyph widths
+  // exactly, so the highlight is approximate, but what gets copied is the real text
+  .svg-text-wrap {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+  }
+
+  .svg-text {
+    display: block;
+  }
+
+  .svg-text-copy {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    white-space: pre;
+    color: transparent;
+    user-select: text;
   }
 
   .grid-2 {
