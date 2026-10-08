@@ -25,8 +25,8 @@ export function Bio(props: BioProps) {
     <div
       class="bl-bio"
       style={{
-        '--saber-left': config().saberColors.left,
-        '--saber-right': config().saberColors.right,
+        '--sabre-left': config().sabreColours.left,
+        '--sabre-right': config().sabreColours.right,
       }}
     >
       {config().fontRendering === 'font-face' && <style>{fontFaceCss()}</style>}

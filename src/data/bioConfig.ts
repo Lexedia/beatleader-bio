@@ -18,7 +18,7 @@ export interface Video {
 
 export interface BioConfig {
   fontRendering: 'svg' | 'font-face'
-  saberColors: {
+  sabreColours: {
     left: string
     right: string
   }
@@ -78,7 +78,7 @@ export interface BioConfig {
 
 export const defaultBioConfig: BioConfig = {
   fontRendering: 'svg',
-  saberColors: {
+  sabreColours: {
     left: '#da93ff',
     right: '#8adcff',
   },

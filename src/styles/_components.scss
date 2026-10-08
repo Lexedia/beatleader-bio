@@ -140,22 +140,22 @@
 
     &.note-left .note-body,
     &.note-left .note-link {
-      background: var(--saber-left);
-      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.28), 0 3px 0 var(--saber-left), 0 0 12px var(--saber-left);
+      background: var(--sabre-left);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.28), 0 3px 0 var(--sabre-left), 0 0 12px var(--sabre-left);
     }
 
     &.note-right .note-body,
     &.note-right .note-link {
-      background: var(--saber-right);
-      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.28), 0 3px 0 var(--saber-right), 0 0 12px var(--saber-right);
+      background: var(--sabre-right);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.28), 0 3px 0 var(--sabre-right), 0 0 12px var(--sabre-right);
     }
 
     &.note-left .note-link {
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 0 var(--saber-left), 0 0 10px var(--saber-left);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 0 var(--sabre-left), 0 0 10px var(--sabre-left);
     }
 
     &.note-right .note-link {
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 0 var(--saber-right), 0 0 10px var(--saber-right);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 0 var(--sabre-right), 0 0 10px var(--sabre-right);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -313,7 +313,7 @@
 
 
     .svg-text-glint {
-      fill: var(--saber-left);
+      fill: var(--sabre-left);
       opacity: 0;
       animation: text-glint 6s ease-in-out infinite;
 
@@ -660,7 +660,6 @@
     padding: 10px 12px;
     transition: all 0.2s ease;
 
-    // Saber slash: parked off the left edge, sweeps across on hover and snaps back (no transition) on leave
     &::after {
       content: "";
       position: absolute;
@@ -670,7 +669,7 @@
       width: 14%;
       pointer-events: none;
       opacity: 0;
-      background: linear-gradient(90deg, transparent, var(--saber-left) 40%, var(--saber-right) 60%, transparent);
+      background: linear-gradient(90deg, transparent, var(--sabre-left) 40%, var(--sabre-right) 60%, transparent);
       transform: translateX(-150%) rotate(25deg);
     }
 
