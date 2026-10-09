@@ -38,8 +38,9 @@ const vite = await createServer({
   appType: 'custom',
 })
 
-const { renderBio } = await vite.ssrLoadModule('/src/render.ts')
+const { renderBio, renderLeadingCss } = await vite.ssrLoadModule('/src/render.ts')
 const bioHtml = await renderBio()
+const leadingCss: string = renderLeadingCss()
 await vite.close()
 console.log(`Solid component rendered to static HTML (~${(bioHtml.length / 1024).toFixed(2)} KiB).`)
 
@@ -49,7 +50,8 @@ if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true })
 }
 
-const bioSnippet = `<style>\n${compiledCss}\n</style>\n${bioHtml}\n`
+const css = leadingCss ? `${leadingCss}\n${compiledCss}` : compiledCss
+const bioSnippet = `<style>\n${css}\n</style>\n${bioHtml}\n`
 const snippetPath = path.join(distDir, 'bio-snippet.html')
 fs.writeFileSync(snippetPath, bioSnippet, 'utf-8')
 console.log(`Generated BeatLeader Bio snippet -> ${snippetPath}`)
@@ -154,7 +156,7 @@ const previewHtml = `<!DOCTYPE html>
   </style>
 
   <style>
-${compiledCss}
+${css}
   </style>
 </head>
 <body class="reedark-theme">

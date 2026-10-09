@@ -26,7 +26,17 @@ interface FontTextProps extends SvgTextOptions {
  */
 export function FontText(props: FontTextProps) {
   if (props.mode !== 'svg')
-    return <>{props.children}</>
+    return (
+      <span
+        style={{
+          'font-family': `"${props.font.family}", var(--font)`,
+          'font-weight': props.weight,
+          'letter-spacing': props.letterSpacing ? `${props.letterSpacing}em` : undefined,
+        }}
+      >
+        {props.children}
+      </span>
+    )
 
   return (
     <>

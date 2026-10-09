@@ -38,7 +38,11 @@ async function main() {
   const css = snippet.slice(snippet.indexOf(style) + style.length, styleEnd).trim()
   const html = snippet.slice(styleEnd + '</style>'.length).trim()
 
-  const body = `<style>body { color: white; } * { box-sizing: border-box; } body { margin: 0; }\n${css}\n</style><body>${html}</body>`
+  // `@import`s only counts at the very top of a stylesheet, so lift any out of the CSS and put them first
+  const imports = css.match(/@import[^;]+;/g) ?? []
+  const rules = imports.reduce((rest, rule) => rest.replace(rule, ''), css).trim()
+
+  const body = `<style>${imports.join('\n')}\nbody { color: white; } * { box-sizing: border-box; } body { margin: 0; }\n${rules}\n</style><body>${html}</body>`
 
   console.log(`Pushing bio for ${playerId} (~${(body.length / 1024).toFixed(1)} KiB)...`)
   const res = await fetch(`https://api.beatleader.com/user/richbio?id=${playerId}`, {

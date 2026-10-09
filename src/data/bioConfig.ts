@@ -17,7 +17,14 @@ export interface Video {
 }
 
 export interface BioConfig {
-  fontRendering: 'svg' | 'font-face'
+  /**
+   * * `'google-fonts'`: plain text, fonts `@import`-ed from Google Fonts
+   *
+   * * `'svg'`: glyphs baked into inline SVG paths
+   *
+   * * `'font-face'`: plain text with `@font-face` data URLs
+   */
+  fontRendering: 'google-fonts' | 'svg' | 'font-face'
   sabreColours: {
     left: string
     right: string
@@ -77,7 +84,7 @@ export interface BioConfig {
 }
 
 export const defaultBioConfig: BioConfig = {
-  fontRendering: 'svg',
+  fontRendering: 'google-fonts',
   sabreColours: {
     left: '#da93ff',
     right: '#8adcff',
