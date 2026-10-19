@@ -170,7 +170,7 @@ function findButton(layout: MeasuredNode, linkText: string) {
 
 function buttonCss() {
   const px = (n: number) => `${round(n / WIDTH * 100)}cqw`
-  return `.bl-bio .droste-button{border-width:${px(1)};border-radius:${px(10)}}`
+  return `.bl-bio .droste-button{box-shadow:inset 0 0 0 ${px(1)} var(--pink-accent);border-radius:${px(10)}}`
 }
 
 export async function buildDroste(html: string, css: string, linkText: string, assetsUrl: string): Promise<Droste> {
