@@ -45,7 +45,6 @@ const {
 let bioHtml: string = await renderBio()
 const leadingCss: string = renderLeadingCss()
 
-// The recursion easter egg's miniature is painted from the bio itself, so it needs a first render
 const linkName: string | undefined = recursiveLinkName()
 const assets: string = assetsUrl()
 let drosteCss = ''
