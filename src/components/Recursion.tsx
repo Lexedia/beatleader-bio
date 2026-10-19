@@ -19,6 +19,7 @@ function miniature(art: DrosteArt, depth: number): JSX.Element {
       {depth < DEPTH && DROSTE_VARIANTS.map((variant) => (
         <img class={`droste-art droste-art-${variant}`} src={art.sources[variant]} alt="" />
       ))}
+      {depth < DEPTH && <span class="droste-button" style={place(art.button)} />}
       {depth < DEPTH && miniature(art, depth + 1)}
     </span>
   )

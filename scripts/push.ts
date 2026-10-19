@@ -8,13 +8,8 @@ import { createHash } from 'node:crypto'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 
-/*
- * The recursion easter egg's paintings are generated into assets/ and loaded from GitHub, so they
- * have to be committed and pushed before the bio that points at them. Each link carries a hash of
- * the painting it expects, which we check against what GitHub is actually serving.
- */
 async function assetsArePublished(snippet: string) {
-  const links = [ ...snippet.matchAll(/src="(https:\/\/[^"?]+\/(droste-[\w-]+\.svg))\?v=(\w+)"/g) ]
+  const links = [ ...snippet.matchAll(/src="(https:\/\/[^"?]+\/(droste-[\w-]+\.webp))\?v=(\w+)"/g) ]
   const unique = new Map(links.map(([
     , url,
     file,
@@ -33,7 +28,7 @@ async function assetsArePublished(snippet: string) {
     { file, hash },
   ] of unique) {
     const res = await fetch(url, { cache: 'no-store' })
-    const served = res.ok ? createHash('sha256').update(await res.text()).digest('hex').slice(0, hash.length) : undefined
+    const served = res.ok ? createHash('sha256').update(Buffer.from(await res.arrayBuffer())).digest('hex').slice(0, hash.length) : undefined
     if (served !== hash) {
       stale.push(file)
     }
@@ -41,7 +36,7 @@ async function assetsArePublished(snippet: string) {
 
   if (stale.length) {
     console.error(`GitHub isn't serving the current ${stale.join(', ')} yet. Commit and push assets/ first:`)
-    console.error('  git add assets/droste-*.svg && git commit -m "repaint the recursion" && git push')
+    console.error('  git add assets/droste-* && git commit -m "repaint the recursion" && git push')
     console.error('raw.githubusercontent.com can take a few minutes to catch up. Use `pnpm push --force` to push anyway.')
   }
   return stale.length === 0

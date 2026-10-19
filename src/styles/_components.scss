@@ -1076,6 +1076,7 @@ $droste-close-at: $droste-overflow-at + 1.4s;
     right: 0;
     bottom: 0;
     left: 0;
+    contain: strict;
   }
 
   .droste-tunnel > .droste-frame {
@@ -1093,6 +1094,15 @@ $droste-close-at: $droste-overflow-at + 1.4s;
     width: 100%;
     height: 100%;
     background: var(--bg);
+    container-type: size;
+    contain: strict;
+  }
+
+  .droste-button {
+    position: absolute;
+    border-style: solid;
+    border-color: var(--pink-accent);
+    background: var(--card-bg);
   }
 
   .droste-art {

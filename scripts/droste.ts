@@ -7,7 +7,7 @@
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import { measure, renderSvg, type MeasuredNode } from 'takumi-js'
+import { measure, render, type MeasuredNode } from 'takumi-js'
 import { googleFonts, subsetFonts } from 'takumi-js/helpers'
 import { Renderer } from 'takumi-js/node'
 import {
@@ -20,6 +20,8 @@ export interface Droste {
 }
 
 const WIDTH = 880
+
+const PIXEL_RATIO = 3
 
 const THEME_CLASSES: Record<DrosteVariant, string | undefined> = {
   dark: undefined,
@@ -54,60 +56,13 @@ const PORTRAIT_CSS = `
   transition: none !important;
 }
 .bl-bio .spoiler-content { color: transparent !important; filter: none !important; background: var(--text-muted); border-radius: 4px; opacity: 0.4 }
-.bl-bio .social-link-recursive { border-color: var(--pink-accent) !important }
-.bl-bio .social-link-recursive > * { visibility: hidden }
+.bl-bio .social-link-recursive { visibility: hidden }
 `
 
-const INVISIBLE_ELEMENT = /<(?:use|path)\b(?=[^>]*\bfill-opacity="0")(?![^>]*\bstroke-opacity="(?!0")[^"]*")[^>]*\/>\s*/g
-const INVISIBLE_GROUP = /<g\b[^>]*\bfill-opacity="0"[^>]*>(?:\s*<use\b[^>]*\/>)*\s*<\/g>\s*/g
-const EMPTY_GROUP = /<g\b[^>]*>\s*<\/g>\s*/g
-
-function attribute(element: string, name: string) {
-  return element.match(new RegExp(`\\s${name}="([^"]*)"`))?.[1]
-}
-
-
-function inlineSvgImages(svg: string, iconColour: string) {
-  return svg.replace(/<image\b[^>]*href="data:image\/svg\+xml;base64,([^"]+)"[^>]*\/>/g, (image, data: string) => {
-    const inner = Buffer.from(data, 'base64').toString('utf-8')
-    const root = inner.match(/<svg\b[^>]*>/)?.[0]
-    if (!root) {
-      return image
-    }
-
-    const colour = attribute(root, 'color') ?? iconColour
-    const fill = root.includes('class="note-arrow"') ? 'rgba(255,255,255,0.92)' : attribute(root, 'fill') ?? 'currentColor'
-    const placed = [
-      'x',
-      'y',
-      'width',
-      'height',
-    ].map((name) => `${name}="${attribute(image, name) ?? 0}"`).join(' ')
-    const viewBox = attribute(root, 'viewBox')
-
-    return inner.replace(root, `<svg ${placed}${viewBox ? ` viewBox="${viewBox}"` : ''} fill="${fill}" color="${colour}">`)
-  })
-}
-
-function tidySvg(svg: string, iconColour: string) {
-  let out = inlineSvgImages(svg, iconColour)
-    .replace(INVISIBLE_GROUP, '')
-    .replace(INVISIBLE_ELEMENT, '')
-
-  for (let previous = ''; previous !== out;) {
-    previous = out
-    out = out.replace(EMPTY_GROUP, '')
-  }
-
-  const used = new Set([ ...out.matchAll(/href="#(g\d+)"/g) ].map((match) => match[1]))
-  out = out.replace(/<path id="(g\d+)"[^>]*\/>\s*/g, (element, id: string) => used.has(id) ? element : '')
-
-  return out.replace(/<svg\b([^>]*)>/, '<svg$1 preserveAspectRatio="none">')
-}
-
-function themeValue(css: string, themeClass: string | undefined, name: string): string | undefined {
-  const block = themeClass ? `\\.${themeClass} \\.bl-bio` : ':root'
-  return css.match(new RegExp(`${block}\\s*\\{[^}]*--${name}:\\s*([^;}]+)`))?.[1]?.trim()
+function colourInlineSvgs(html: string) {
+  return html
+    .replace(/<svg class="note-arrow"/g, '<svg class="note-arrow" fill="rgba(255,255,255,0.92)"')
+    .replace(/<svg(?![^>]*\sfill=)/g, '<svg fill="currentColor"')
 }
 
 interface Rect {
@@ -183,7 +138,16 @@ async function makeRenderer(html: string) {
   return renderer
 }
 
-function findSlot(layout: MeasuredNode, linkText: string): DrosteBox {
+function percentages(rect: Rect, width: number, height: number): DrosteBox {
+  return {
+    x: round(rect.x / width * 100),
+    y: round(rect.y / height * 100),
+    w: round(rect.width / width * 100),
+    h: round(rect.height / height * 100),
+  }
+}
+
+function findButton(layout: MeasuredNode, linkText: string) {
   const { width, height } = layout
   const label = flatten(layout).find(({ node, rect }) => rect.width > 0 && node.runs.some((run) => run.text.trim() === linkText))
   if (!label?.parent) {
@@ -194,23 +158,31 @@ function findSlot(layout: MeasuredNode, linkText: string): DrosteBox {
   const inset = 3
   const ratio = Math.min((button.height - (inset * 2)) / height, (button.width - (inset * 2)) / width)
   return {
-    x: round((button.x + (button.width / 2) - ((ratio * width) / 2)) / width * 100),
-    y: round((button.y + (button.height / 2) - ((ratio * height) / 2)) / height * 100),
-    w: round(ratio * 100),
-    h: round(ratio * 100),
+    button: percentages(button, width, height),
+    slot: percentages({
+      x: button.x + (button.width / 2) - ((ratio * width) / 2),
+      y: button.y + (button.height / 2) - ((ratio * height) / 2),
+      width: ratio * width,
+      height: ratio * height,
+    }, width, height),
   }
+}
+
+function buttonCss() {
+  const px = (n: number) => `${round(n / WIDTH * 100)}cqw`
+  return `.bl-bio .droste-button{border-width:${px(1)};border-radius:${px(10)}}`
 }
 
 export async function buildDroste(html: string, css: string, linkText: string, assetsUrl: string): Promise<Droste> {
   const renderer = await makeRenderer(html)
   const stylesheet = css.replace(/@import[^;]+;/g, '')
-  const defaultIconColour = themeValue(css, undefined, 'text-secondary') ?? '#c9bfd4'
+  const coloured = colourInlineSvgs(html)
 
-  let slot: DrosteBox | undefined
+  let place: ReturnType<typeof findButton> | undefined
   const sources = {} as Record<DrosteVariant, string>
   for (const variant of DROSTE_VARIANTS) {
     const themeClass = THEME_CLASSES[variant]
-    const themed = themeClass ? `<div class="${themeClass}">${html}</div>` : html
+    const themed = themeClass ? `<div class="${themeClass}">${coloured}</div>` : coloured
     const options = {
       renderer,
       width: WIDTH,
@@ -220,29 +192,28 @@ export async function buildDroste(html: string, css: string, linkText: string, a
       ],
     }
 
-    const [
-      rawSvg,
-      layout,
-    ] = await Promise.all([
-      renderSvg(themed, options),
-      measure(themed, options),
-    ])
-    slot ??= findSlot(layout, linkText)
+    place ??= findButton(await measure(themed, options), linkText)
+    const image = await render(themed, {
+      ...options,
+      width: WIDTH * PIXEL_RATIO,
+      format: 'webp',
+      quality: 88,
+      devicePixelRatio: PIXEL_RATIO,
+    })
 
-    const svg = tidySvg(rawSvg, themeValue(css, themeClass, 'text-secondary') ?? defaultIconColour)
-    const file = `droste-${variant}.svg`
-    fs.writeFileSync(path.resolve(process.cwd(), 'assets', file), svg, 'utf-8')
+    const file = `droste-${variant}.webp`
+    fs.writeFileSync(path.resolve(process.cwd(), 'assets', file), image)
 
-    const hash = crypto.createHash('sha256').update(svg).digest('hex').slice(0, 10)
+    const hash = crypto.createHash('sha256').update(image).digest('hex').slice(0, 10)
     sources[variant] = `${assetsUrl}/${file}?v=${hash}`
-    console.log(`Painted ${file} (~${(svg.length / 1024).toFixed(2)} KiB).`)
+    console.log(`Painted ${file} (~${(image.length / 1024).toFixed(2)} KiB).`)
   }
 
   return {
     art: {
       sources,
-      slot: slot!,
+      ...place!,
     },
-    css: zoomKeyframes(slot!),
+    css: zoomKeyframes(place!.slot) + buttonCss(),
   }
 }

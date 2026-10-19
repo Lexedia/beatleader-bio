@@ -21,5 +21,6 @@ export interface DrosteBox {
 
 export interface DrosteArt {
   sources: Record<DrosteVariant, string>
+  button: DrosteBox
   slot: DrosteBox
 }
