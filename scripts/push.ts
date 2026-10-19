@@ -4,8 +4,48 @@
  * Copyright (c) 2026 Lexedia
  */
 
+import { createHash } from 'node:crypto'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
+
+/*
+ * The recursion easter egg's paintings are generated into assets/ and loaded from GitHub, so they
+ * have to be committed and pushed before the bio that points at them. Each link carries a hash of
+ * the painting it expects, which we check against what GitHub is actually serving.
+ */
+async function assetsArePublished(snippet: string) {
+  const links = [ ...snippet.matchAll(/src="(https:\/\/[^"?]+\/(droste-[\w-]+\.svg))\?v=(\w+)"/g) ]
+  const unique = new Map(links.map(([
+    , url,
+    file,
+    hash,
+  ]) => [
+    url,
+    {
+      file,
+      hash,
+    },
+  ]))
+
+  const stale: string[] = []
+  for (const [
+    url,
+    { file, hash },
+  ] of unique) {
+    const res = await fetch(url, { cache: 'no-store' })
+    const served = res.ok ? createHash('sha256').update(await res.text()).digest('hex').slice(0, hash.length) : undefined
+    if (served !== hash) {
+      stale.push(file)
+    }
+  }
+
+  if (stale.length) {
+    console.error(`GitHub isn't serving the current ${stale.join(', ')} yet. Commit and push assets/ first:`)
+    console.error('  git add assets/droste-*.svg && git commit -m "repaint the recursion" && git push')
+    console.error('raw.githubusercontent.com can take a few minutes to catch up. Use `pnpm push --force` to push anyway.')
+  }
+  return stale.length === 0
+}
 
 async function main() {
 
@@ -34,6 +74,9 @@ async function main() {
   const style = '<style>'
 
   const snippet = fs.readFileSync(snippetPath, 'utf-8')
+  if (!process.argv.includes('--force') && !(await assetsArePublished(snippet))) {
+    return 1
+  }
   const styleEnd = snippet.indexOf('</style>')
   const css = snippet.slice(snippet.indexOf(style) + style.length, styleEnd).trim()
   const html = snippet.slice(styleEnd + '</style>'.length).trim()

@@ -82,16 +82,31 @@ export function Socials(props: SocialsProps) {
     <div class="socials-bar">
       {props.socials.map((item, idx) => (
         <>
-          <a
-            class="social-link"
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={item.name}
-          >
-            {renderIcon(item.icon)}
-            <span>{item.name}</span>
-          </a>
+          {item.recursive
+            ? (
+              <>
+                <label for="recursion-a" class="social-link social-link-recursive recursion-link-a" title={item.name}>
+                  {renderIcon(item.icon)}
+                  <span>{item.name}</span>
+                </label>
+                <label for="recursion-b" class="social-link social-link-recursive recursion-link-b" title={item.name}>
+                  {renderIcon(item.icon)}
+                  <span>{item.name}</span>
+                </label>
+              </>
+            )
+            : (
+              <a
+                class="social-link"
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={item.name}
+              >
+                {renderIcon(item.icon)}
+                <span>{item.name}</span>
+              </a>
+            )}
           {idx < props.socials.length - 1 && <span class="socials-dot">|</span>}
         </>
       ))}

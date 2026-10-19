@@ -142,7 +142,7 @@ function placeLinks(links: ChainLink[]): PlacedLink[] {
   })
 }
 
-/* See src/styles/_components.scss:147  */
+/* See src/styles/_components.scss  */
 const CUBE_DEPTH = 3
 const LINK_DEPTH = 2
 

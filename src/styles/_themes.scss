@@ -16,8 +16,18 @@ html body {
   --card-bg: rgba(28, 20, 38, 0.65);
   --card-border: rgba(255, 183, 213, 0.35);
   --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+
+  .card,
+  .quote-banner,
+  .tab-label,
+  .social-link {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+.flylight-theme .bl-bio .lava {
+  opacity: 0.2;
 }
 
 .flylight-theme .bl-bio {
@@ -59,5 +69,27 @@ html body {
   .info-card {
     background: #ffffff;
     border-color: #ffd8e4;
+  }
+}
+
+.mirror-theme .bl-bio,
+.mirror-low-theme .bl-bio,
+.unbounded-theme .bl-bio {
+  .droste-art-dark {
+    display: none;
+  }
+
+  .droste-art-glass {
+    display: block;
+  }
+}
+
+.flylight-theme .bl-bio {
+  .droste-art-dark {
+    display: none;
+  }
+
+  .droste-art-light {
+    display: block;
   }
 }

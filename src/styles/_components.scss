@@ -1,3 +1,8 @@
+$droste-loop: 2.6s;
+$droste-max-depth: 12;
+$droste-overflow-at: $droste-loop * $droste-max-depth;
+$droste-close-at: $droste-overflow-at + 1.4s;
+
 .bl-bio {
   box-sizing: border-box;
   width: 100%;
@@ -8,7 +13,7 @@
   background: transparent;
   border: none;
   border-radius: 0;
-  padding: 12px 16px;
+  padding: 8px 16px;
   position: relative;
   overflow: hidden;
   box-shadow: none;
@@ -23,6 +28,24 @@
     color: inherit;
     text-decoration: none;
     transition: all 0.2s ease;
+  }
+
+  .backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent, #000 56px, #000 calc(100% - 56px), transparent),
+      linear-gradient(180deg, transparent, #000 40px, #000 calc(100% - 40px), transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(90deg, transparent, #000 56px, #000 calc(100% - 56px), transparent),
+      linear-gradient(180deg, transparent, #000 40px, #000 calc(100% - 40px), transparent);
+    mask-composite: intersect;
   }
 
   .aura {
@@ -48,32 +71,39 @@
     }
   }
 
-  .blob {
+  .lava {
     position: absolute;
-    width: 280px;
-    height: 240px;
-    filter: blur(60px);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    filter: blur(38px);
+    opacity: 0.32;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.3;
+  }
+
+  .lava-blob {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
-    animation-direction: alternate;
 
-    &.blob-pink {
-      top: 5%;
-      left: 10%;
-      background: var(--pink-accent);
-      animation-name: blob-drift-a;
-      animation-duration: 22s;
+    &.lava-path-a {
+      animation-name: lava-a;
     }
 
-    &.blob-purple {
-      bottom: 5%;
-      right: 10%;
-      background: var(--purple-accent);
-      animation-name: blob-drift-b;
-      animation-duration: 27s;
+    &.lava-path-b {
+      animation-name: lava-b;
+    }
+
+    &.lava-path-c {
+      animation-name: lava-c;
+    }
+
+    &.lava-sinks {
+      animation-direction: reverse;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -226,14 +256,14 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
 
   .header {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--divider);
 
     @media (max-width: 640px) {
@@ -248,8 +278,8 @@
     flex-shrink: 0;
 
     .avatar-frame {
-      width: 64px;
-      height: 64px;
+      width: 56px;
+      height: 56px;
       border-radius: 16px;
       padding: 2px;
       background: rgba(255, 183, 213, 0.2);
@@ -315,6 +345,26 @@
     .svg-text-glint {
       fill: var(--sabre-left);
       opacity: 0;
+      animation: text-glint 6s ease-in-out infinite;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+
+    .text-glint {
+      position: relative;
+      display: inline-block;
+    }
+
+    .text-glint-flash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--sabre-left);
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
       animation: text-glint 6s ease-in-out infinite;
 
       @media (prefers-reduced-motion: reduce) {
@@ -408,7 +458,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
 
@@ -417,7 +467,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 4px 14px;
       border-radius: 12px;
       font-size: 17px;
       font-weight: 700;
@@ -657,7 +707,7 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 14px;
-    padding: 10px 12px;
+    padding: 8px 12px;
     transition: all 0.2s ease;
 
     &::after {
@@ -689,7 +739,7 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      margin-bottom: 7px;
+      margin-bottom: 5px;
       font-size: 13px;
       font-weight: 700;
       color: var(--tag-text);
@@ -712,8 +762,8 @@
     border: 1px solid var(--card-border);
     border-left: 3px solid var(--pink-accent);
     border-radius: 12px;
-    padding: 8px 12px;
-    margin-bottom: 8px;
+    padding: 6px 12px;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
     gap: 9px;
@@ -766,7 +816,7 @@
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
-    padding-bottom: 4px;
+    padding-bottom: 3px;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
 
     &:last-child {
@@ -937,7 +987,7 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding-top: 10px;
+    padding-top: 8px;
     border-top: 1px solid var(--divider);
     flex-wrap: wrap;
   }
@@ -953,6 +1003,7 @@
     color: var(--text-secondary);
     background: var(--card-bg);
     border: 1px solid var(--card-border);
+    cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     svg {
@@ -979,5 +1030,143 @@
     color: var(--pink-soft);
     font-size: 10px;
     opacity: 0.5;
+  }
+
+  .recursion-radio {
+    position: absolute;
+    opacity: 0;
+    left: -9999px;
+    pointer-events: none;
+  }
+
+  .recursion-link-b {
+    display: none;
+  }
+
+  #recursion-a:checked ~ .content {
+    .recursion-link-a {
+      display: none;
+    }
+
+    .recursion-link-b {
+      display: inline-flex;
+    }
+  }
+
+  .recursion {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .droste-tunnel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .droste-tunnel > .droste-frame {
+    animation: droste-zoom $droste-loop linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+
+  .droste-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+  }
+
+  .droste-art {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
+
+  .droste-art-dark {
+    display: block;
+  }
+
+  .recursion-caption {
+    position: relative;
+    align-self: flex-start;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 16px;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .recursion-title {
+    font-family: var(--font-title);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--tag-text);
+  }
+
+  .recursion-hint {
+    max-height: 2em;
+    overflow: hidden;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .recursion-overflow {
+    display: none;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ff5f6d;
+  }
+
+
+  @each $variant in a, b {
+    #recursion-#{$variant}:checked ~ .recursion {
+      display: flex;
+      animation:
+        recursion-fall-#{$variant} 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        recursion-close-#{$variant} 0.5s $droste-close-at forwards;
+
+      .recursion-hint {
+        animation: recursion-hide-#{$variant} 0s $droste-overflow-at forwards;
+      }
+
+      .recursion-overflow {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        animation: recursion-crash-#{$variant} 0.6s $droste-overflow-at forwards;
+      }
+    }
   }
 }

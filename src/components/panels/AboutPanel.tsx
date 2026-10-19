@@ -73,7 +73,7 @@ export function AboutPanel(props: AboutPanelProps) {
         </div>
       </div>
 
-      <div style={{ 'margin-top': '8px' }} class="grid-2">
+      <div style={{ 'margin-top': '6px' }} class="grid-2">
         {props.about.goals.map((goal) => (
           <div class="card">
             <div class="card-header">

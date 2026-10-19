@@ -13,9 +13,27 @@ interface FontTextProps extends SvgTextOptions {
   mode: BioConfig['fontRendering']
   children: string
   /**
-   * sabre-coloured glint passing over the letters one by one (svg mode only)
+   * sabre-coloured glint passing over the letters one by one
    */
   glint?: boolean
+}
+
+const GLINT_STAGGER = 0.09
+
+function glintDelay(index: number) {
+  return `${(index * GLINT_STAGGER).toFixed(2)}s`
+}
+
+function glintLetters(text: string) {
+  const letters = [ ...new Intl.Segmenter().segment(text) ].map((part) => part.segment)
+  return letters.map((letter, i) => letter.trim()
+    ? (
+      <span class="text-glint">
+        {letter}
+        <span class="text-glint-flash" aria-hidden="true" style={{ 'animation-delay': glintDelay(i) }}>{letter}</span>
+      </span>
+    )
+    : letter)
 }
 
 /**
@@ -34,7 +52,7 @@ export function FontText(props: FontTextProps) {
           'letter-spacing': props.letterSpacing ? `${props.letterSpacing}em` : undefined,
         }}
       >
-        {props.children}
+        {props.glint ? glintLetters(props.children) : props.children}
       </span>
     )
 
@@ -56,7 +74,7 @@ export function FontText(props: FontTextProps) {
             >
               <path d={run.d} />
               {props.glint && run.glyphs.map((d, i) => (
-                <path class="svg-text-glint" d={d} style={{ 'animation-delay': `${(i * 0.09).toFixed(2)}s` }} />
+                <path class="svg-text-glint" d={d} style={{ 'animation-delay': glintDelay(i) }} />
               ))}
             </svg>
             <span class="svg-text-copy" style={{ 'line-height': run.height }}>{run.text}</span>

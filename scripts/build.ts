@@ -11,6 +11,7 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 import solidPlugin from 'vite-plugin-solid'
+import { buildDroste } from './droste'
 
 console.log('[1/4] Compiling SCSS to CSS...')
 const scssPath = path.resolve(process.cwd(), 'src/styles/main.scss')
@@ -38,9 +39,22 @@ const vite = await createServer({
   appType: 'custom',
 })
 
-const { renderBio, renderLeadingCss } = await vite.ssrLoadModule('/src/render.ts')
-const bioHtml = await renderBio()
+const {
+  renderBio, renderLeadingCss, recursiveLinkName, assetsUrl,
+} = await vite.ssrLoadModule('/src/render.ts')
+let bioHtml: string = await renderBio()
 const leadingCss: string = renderLeadingCss()
+
+// The recursion easter egg's miniature is painted from the bio itself, so it needs a first render
+const linkName: string | undefined = recursiveLinkName()
+const assets: string = assetsUrl()
+let drosteCss = ''
+if (linkName) {
+  console.log('Painting the recursion miniatures with Takumi...')
+  const droste = await buildDroste(bioHtml, compiledCss, linkName, assets)
+  drosteCss = droste.css
+  bioHtml = await renderBio(undefined, droste.art)
+}
 await vite.close()
 console.log(`Solid component rendered to static HTML (~${(bioHtml.length / 1024).toFixed(2)} KiB).`)
 
@@ -50,7 +64,11 @@ if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true })
 }
 
-const css = leadingCss ? `${leadingCss}\n${compiledCss}` : compiledCss
+const css = [
+  leadingCss,
+  compiledCss,
+  drosteCss,
+].filter(Boolean).join('\n')
 const bioSnippet = `<style>\n${css}\n</style>\n${bioHtml}\n`
 const snippetPath = path.join(distDir, 'bio-snippet.html')
 fs.writeFileSync(snippetPath, bioSnippet, 'utf-8')
@@ -170,7 +188,7 @@ ${css}
   </div>
 
   <div class="preview-container" id="previewContainer">
-${bioHtml}
+${bioHtml.replaceAll(`${assets}/`, '../assets/')}
   </div>
 
   <textarea id="rawSnippet" style="display:none;">${bioSnippet.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>

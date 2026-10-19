@@ -9,6 +9,7 @@ export interface SocialLink {
   url: string
   icon: 'beatleader' | 'scoresaber' | 'beatsaver' | 'twitch' | 'youtube' | 'discord' | 'twitter' | 'github'
   label?: string
+  recursive?: boolean
 }
 
 export interface Video {
@@ -25,6 +26,7 @@ export interface BioConfig {
    * * `'font-face'`: plain text with `@font-face` data URLs
    */
   fontRendering: 'google-fonts' | 'svg' | 'font-face'
+  assetsUrl: string
   sabreColours: {
     left: string
     right: string
@@ -78,13 +80,13 @@ export interface BioConfig {
     }[]
     genres: string[]
   }
-  // The Videos tab only shows when this has entries
   videos: Video[]
   socials: SocialLink[]
 }
 
 export const defaultBioConfig: BioConfig = {
   fontRendering: 'google-fonts',
+  assetsUrl: 'https://raw.githubusercontent.com/Lexedia/beatleader-bio/refs/heads/mistress/assets',
   sabreColours: {
     left: '#da93ff',
     right: '#8adcff',
@@ -110,7 +112,7 @@ export const defaultBioConfig: BioConfig = {
     showQuoteIcon: false,
     quote: 'hey, i have a bio on my profile, am i cool now?',
     introTitle: 'Ahoy! (´｡• ᵕ •｡`) ♡',
-    introText: 'Welcome to my BeatLeader profile! I\'m an avid rhythm game lover who enjoys slicing cubes, practicing accuracy, and having fun with tech maps.',
+    introText: 'Welcome to my BeatLeader profile! Enjoy your stay fellow visitor, I hope you have a wonderful day too c:',
     quickFacts: [
       {
         label: 'Main Game',
@@ -194,6 +196,7 @@ export const defaultBioConfig: BioConfig = {
       name: 'BeatLeader',
       url: 'https://beatleader.com/u/lexedia',
       icon: 'beatleader',
+      recursive: true,
     },
     {
       name: 'ScoreSaber',
